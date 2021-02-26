@@ -2,12 +2,13 @@ package com.campaign.assignment.model;
 
 import lombok.Data;
 
+import java.util.*;
 import java.io.Serializable;
 
 @Data
 public class Input implements Serializable {
     private String id;
-    private String name;
+    private List<String> segments;
 
     public String getId() {
         return id;
@@ -15,10 +16,10 @@ public class Input implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
+    public List<String> getSegments() {
+        return this.segments;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setSegments(List<String> segments) {
+        this.segments = segments;
     }
 }

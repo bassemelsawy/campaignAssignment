@@ -2,12 +2,13 @@ com/campaign/assignment/AssignmentApplication.java
  com.campaign.assignment.AssignmentApplication
 com/campaign/assignment/model/Input.java
  com.campaign.assignment.model.Input
+com/campaign/assignment/mapper/InputReaderMapper.java
+ com.campaign.assignment.mapper.InputReaderMapper
+com/campaign/assignment/model/TargetCampaign.java
+ com.campaign.assignment.model.TargetCampaign
 com/campaign/assignment/processor/InputItemProcessor.java
  com.campaign.assignment.processor.InputItemProcessor
 com/campaign/assignment/BatchConfiguration.java
  com.campaign.assignment.BatchConfiguration
  com.campaign.assignment.BatchConfiguration$1
  com.campaign.assignment.BatchConfiguration$1$1
- com.campaign.assignment.BatchConfiguration$1$2
- com.campaign.assignment.BatchConfiguration$2
- com.campaign.assignment.BatchConfiguration$2$1

@@ -1,7 +1,9 @@
 package com.campaign.assignment;
 
 
+import com.campaign.assignment.mapper.InputReaderMapper;
 import com.campaign.assignment.model.Input;
+import com.campaign.assignment.model.TargetCampaign;
 import com.campaign.assignment.processor.InputItemProcessor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -9,19 +11,13 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -43,21 +39,8 @@ public class BatchConfiguration {
     public FlatFileItemReader<Input> reader()
     {
         FlatFileItemReader<Input> reader = new FlatFileItemReader<>();
-        reader.setResource(new ClassPathResource("Input.csv"));
-        reader.setLineMapper(new DefaultLineMapper() {
-            {
-                setLineTokenizer(new DelimitedLineTokenizer() {
-                    {
-                        setNames(new String[] { "id", "name" });
-                    }
-                });
-                setFieldSetMapper(new BeanWrapperFieldSetMapper<Input>() {
-                    {
-                        setTargetType(Input.class);
-                    }
-                });
-            }
-        });
+        reader.setResource(new ClassPathResource("Input.txt"));
+        reader.setLineMapper(new InputReaderMapper());
         return reader;
     }
 
@@ -67,18 +50,17 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public FlatFileItemWriter<Input> writer()
+    public FlatFileItemWriter<TargetCampaign> writer()
     {
-        FlatFileItemWriter<Input> writer = new FlatFileItemWriter<>();
+        FlatFileItemWriter<TargetCampaign> writer = new FlatFileItemWriter<>();
 
         writer.setResource(outputResource);
 
-        writer.setLineAggregator(new DelimitedLineAggregator<Input>() {
+        writer.setLineAggregator(new DelimitedLineAggregator<>() {
             {
-                setDelimiter(",");
-                setFieldExtractor(new BeanWrapperFieldExtractor<Input>() {
+                setFieldExtractor(new BeanWrapperFieldExtractor<TargetCampaign>() {
                     {
-                        setNames(new String[] { "id", "name" });
+                        setNames(new String[] {"campaignName"});
                     }
                 });
             }
@@ -90,7 +72,7 @@ public class BatchConfiguration {
 
     @Bean
     public Step step1() {
-        return stepBuilderFactory.get("step1").<Input, Input> chunk(3)
+        return stepBuilderFactory.get("step1").<Input, TargetCampaign> chunk(3)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())

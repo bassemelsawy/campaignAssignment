@@ -1,13 +1,20 @@
 package com.campaign.assignment.processor;
 
 import com.campaign.assignment.model.Input;
+import com.campaign.assignment.model.TargetCampaign;
 import org.springframework.batch.item.ItemProcessor;
 
-public class InputItemProcessor  implements ItemProcessor<Input, Input> {
+public class InputItemProcessor  implements ItemProcessor<Input, TargetCampaign> {
 
     @Override
-    public Input process(Input input) throws Exception {
+    public TargetCampaign process(Input input) throws Exception {
         System.out.println(input);
-        return input;
+
+        /*
+            Replace input Id with the camp name "result of the solution algorithm"
+        */
+        TargetCampaign targetCamp = new TargetCampaign();
+        targetCamp.setCampaignName(input.getId());
+        return targetCamp;
     }
 }
