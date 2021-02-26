@@ -1,45 +1,34 @@
 package com.campaign.assignment.util;
 
 import com.campaign.assignment.model.Input;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-
 
 @Component
 public class CampaignUtil {
 
-    final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private ClassLoader classLoader;
 
-    public CampaignUtil() throws IOException {
-        load();
-    }
-
-    Map<String, Set<String>> map = new HashMap<>();
+    Map<String, Set<String>> campaignDataMap = new HashMap<>();
     Map<String, Integer> distributeMap = new HashMap<>();
 
-    @Autowired
-    ResourceLoader resourceLoader;
-
-    public void load() {
+    public CampaignUtil() {
         this.classLoader = getClass().getClassLoader();
+    }
+
+    @PostConstruct
+    public void load() {
         InputStream inputStream = classLoader.getResourceAsStream("campaignData.txt");
-        map = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+        assert inputStream != null;
+        campaignDataMap = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
                 .lines()
                 .map(line -> line.split(" "))
                 .distinct()
@@ -54,44 +43,54 @@ public class CampaignUtil {
     }
 
     public String process(Input inputLine) {
+        Map<String, Integer> countMap;
+        List<String> segments = inputLine.getSegments();
+
+        if (segments.size() > 0) countMap = loadAllMatchedCampaigns(segments);
+        else return "no campaign";
+
+        Set<String> sameCampaignSet = findMaxCampaign(countMap);
+        countMap.clear();
+
+        return sameCampaignSet.size() == 0 ? "no campaign" : distributeLoad(sameCampaignSet);
+    }
+
+    private Map<String, Integer> loadAllMatchedCampaigns(List<String> segments) {
         Map<String, Integer> countMap = new HashMap<>();
-        List<String> listOfSegments = inputLine.getSegments();
-
-        System.out.println(listOfSegments.toString());
-
-        for (int i = 1; i < listOfSegments.size(); i++) {
-            map.getOrDefault(listOfSegments.get(i), new HashSet<>()).forEach(elm -> {
-                countMap.put(elm, countMap.getOrDefault(elm, 0) + 1);
-            });
+        for (String segment : segments) {
+            campaignDataMap.getOrDefault(segment, new HashSet<>()).forEach(elm ->
+                    countMap.put(elm, countMap.getOrDefault(elm, 0) + 1)
+            );
         }
+        return countMap;
+    }
 
+    private Set<String> findMaxCampaign(Map<String, Integer> countMap) {
         AtomicInteger max = new AtomicInteger();
-        Set<String> set = new HashSet<>();
+        Set<String> sameCampaignSet = new HashSet<>();
         countMap.forEach((key, value) -> {
             if (value > max.get()) {
-                set.clear();
-                set.add(key);
+                sameCampaignSet.clear();
+                sameCampaignSet.add(key);
                 max.set(value);
             } else if (value == max.get()) {
-                set.add(key);
+                sameCampaignSet.add(key);
             }
         });
-        AtomicReference<String>  element = new AtomicReference<>("");
-        if (set.size() == 0)
-            LOGGER.info("no campaign");
-        else {
-            countMap.clear();
-            AtomicInteger count = new AtomicInteger(Integer.MAX_VALUE);
+        return sameCampaignSet;
+    }
 
-            set.forEach(elm -> {
-                if (distributeMap.getOrDefault(elm, 0) < count.get()) {
-                    count.set(distributeMap.getOrDefault(elm, 0));
-                    element.set(elm);
-                }
-            });
-            distributeMap.put(element.get(), distributeMap.getOrDefault(element.get(), 0) + 1);
-            LOGGER.info("" + element.get());
-        }
+    private String distributeLoad(Set<String> sameCampaignSet) {
+        AtomicInteger count = new AtomicInteger(Integer.MAX_VALUE);
+        AtomicReference<String> element = new AtomicReference<>("");
+        sameCampaignSet.forEach(elm -> {
+            if (distributeMap.getOrDefault(elm, 0) < count.get()) {
+                count.set(distributeMap.getOrDefault(elm, 0));
+                element.set(elm);
+            }
+        });
+        distributeMap.put(element.get(), distributeMap.getOrDefault(element.get(), 0) + 1);
         return element.get();
     }
 }
+

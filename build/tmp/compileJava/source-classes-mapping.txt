@@ -4,8 +4,6 @@ com/campaign/assignment/AssignmentApplication.java
  com.campaign.assignment.AssignmentApplication
 com/campaign/assignment/model/TargetCampaign.java
  com.campaign.assignment.model.TargetCampaign
-com/campaign/assignment/mapper/InputReaderMapper.java
- com.campaign.assignment.mapper.InputReaderMapper
 com/campaign/assignment/config/BatchConfiguration.java
  com.campaign.assignment.config.BatchConfiguration
  com.campaign.assignment.config.BatchConfiguration$1
@@ -14,3 +12,5 @@ com/campaign/assignment/processor/InputItemProcessor.java
  com.campaign.assignment.processor.InputItemProcessor
 com/campaign/assignment/util/CampaignUtil.java
  com.campaign.assignment.util.CampaignUtil
+com/campaign/assignment/mapper/InputReaderMapper.java
+ com.campaign.assignment.mapper.InputReaderMapper

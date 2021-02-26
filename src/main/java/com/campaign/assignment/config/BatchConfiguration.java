@@ -16,6 +16,7 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -33,10 +34,8 @@ public class BatchConfiguration {
     @Autowired
     public StepBuilderFactory stepBuilderFactory;
 
-    //TODO : Inject data from application file
-    private Resource outputResource = new FileSystemResource("output/outputData.csv");
-
-
+    @Value("${DIR_OUTPUT_FILE}")
+    private String outputFileDirectory;
 
     @Bean
     public FlatFileItemReader<Input> reader()
@@ -56,6 +55,7 @@ public class BatchConfiguration {
     public FlatFileItemWriter<TargetCampaign> writer()
     {
         FlatFileItemWriter<TargetCampaign> writer = new FlatFileItemWriter<>();
+        Resource outputResource = new FileSystemResource(outputFileDirectory);
         writer.setResource(outputResource);
         writer.setLineAggregator(new DelimitedLineAggregator<>() {
             {
