@@ -8,8 +8,6 @@ public class InputItemProcessor  implements ItemProcessor<Input, TargetCampaign>
 
     @Override
     public TargetCampaign process(Input input) throws Exception {
-        System.out.println(input);
-
         /*
             Replace input Id with the camp name "result of the solution algorithm"
         */

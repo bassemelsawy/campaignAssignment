@@ -1,7 +1,7 @@
-com/campaign/assignment/AssignmentApplication.java
- com.campaign.assignment.AssignmentApplication
 com/campaign/assignment/model/Input.java
  com.campaign.assignment.model.Input
+com/campaign/assignment/AssignmentApplication.java
+ com.campaign.assignment.AssignmentApplication
 com/campaign/assignment/mapper/InputReaderMapper.java
  com.campaign.assignment.mapper.InputReaderMapper
 com/campaign/assignment/model/TargetCampaign.java

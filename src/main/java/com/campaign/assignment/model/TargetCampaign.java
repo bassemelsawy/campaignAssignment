@@ -1,9 +1,5 @@
 package com.campaign.assignment.model;
 
-import lombok.Data;
-import lombok.Setter;
-
-
 public class TargetCampaign {
     private String campaignName;
 

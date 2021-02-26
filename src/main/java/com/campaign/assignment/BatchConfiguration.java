@@ -35,6 +35,8 @@ public class BatchConfiguration {
 
     private Resource outputResource = new FileSystemResource("output/outputData.csv");
 
+
+
     @Bean
     public FlatFileItemReader<Input> reader()
     {
@@ -53,9 +55,7 @@ public class BatchConfiguration {
     public FlatFileItemWriter<TargetCampaign> writer()
     {
         FlatFileItemWriter<TargetCampaign> writer = new FlatFileItemWriter<>();
-
         writer.setResource(outputResource);
-
         writer.setLineAggregator(new DelimitedLineAggregator<>() {
             {
                 setFieldExtractor(new BeanWrapperFieldExtractor<TargetCampaign>() {
@@ -68,10 +68,8 @@ public class BatchConfiguration {
         return writer;
     }
 
-
-
     @Bean
-    public Step step1() {
+    public Step lineProcessingStep() {
         return stepBuilderFactory.get("step1").<Input, TargetCampaign> chunk(3)
                 .reader(reader())
                 .processor(processor())
@@ -79,14 +77,12 @@ public class BatchConfiguration {
                 .build();
     }
 
-
     @Bean
     public Job importUserJob() {
         return jobBuilderFactory.get("importUserJob")
                 .incrementer(new RunIdIncrementer())
-                .flow(step1())
+                .flow(lineProcessingStep())
                 .end()
                 .build();
     }
-
 }
