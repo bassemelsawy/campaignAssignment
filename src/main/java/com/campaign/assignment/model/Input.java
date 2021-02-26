@@ -3,8 +3,8 @@ package com.campaign.assignment.model;
 import java.util.*;
 import java.io.Serializable;
 
-
 public class Input implements Serializable {
+
     private String id;
     private List<String> segments;
 
@@ -23,4 +23,5 @@ public class Input implements Serializable {
     public List<String> getSegments(){
         return this.segments;
     }
+
 }

@@ -9,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class InputItemProcessor  implements ItemProcessor<Input, TargetCampaign> {
 
     @Autowired
-    CampaignUtil campaignUtil ;
+    CampaignUtil campaignUtil;
 
     @Override
-    public TargetCampaign process(Input input) throws Exception {
+    public TargetCampaign process(Input input) {
         String campaignResult =  campaignUtil.process(input);
         TargetCampaign targetCamp = new TargetCampaign();
         targetCamp.setCampaignName(campaignResult);
         return targetCamp;
     }
+
 }

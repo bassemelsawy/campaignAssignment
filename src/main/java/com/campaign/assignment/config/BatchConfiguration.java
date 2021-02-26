@@ -1,6 +1,5 @@
 package com.campaign.assignment.config;
 
-
 import com.campaign.assignment.mapper.InputReaderMapper;
 import com.campaign.assignment.model.Input;
 import com.campaign.assignment.model.TargetCampaign;
@@ -23,7 +22,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
-
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
@@ -38,8 +36,7 @@ public class BatchConfiguration {
     private String outputFileDirectory;
 
     @Bean
-    public FlatFileItemReader<Input> reader()
-    {
+    public FlatFileItemReader<Input> reader() {
         FlatFileItemReader<Input> reader = new FlatFileItemReader<>();
         reader.setResource(new ClassPathResource("Input.txt"));
         reader.setLineMapper(new InputReaderMapper());
@@ -52,8 +49,7 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public FlatFileItemWriter<TargetCampaign> writer()
-    {
+    public FlatFileItemWriter<TargetCampaign> writer() {
         FlatFileItemWriter<TargetCampaign> writer = new FlatFileItemWriter<>();
         Resource outputResource = new FileSystemResource(outputFileDirectory);
         writer.setResource(outputResource);
@@ -86,4 +82,5 @@ public class BatchConfiguration {
                 .end()
                 .build();
     }
+
 }

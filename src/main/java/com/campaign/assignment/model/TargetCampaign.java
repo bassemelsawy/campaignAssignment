@@ -1,6 +1,7 @@
 package com.campaign.assignment.model;
 
 public class TargetCampaign {
+
     private String campaignName;
 
     public String getCampaignName() {
@@ -10,4 +11,5 @@ public class TargetCampaign {
     public void setCampaignName(String campaignName) {
         this.campaignName = campaignName;
     }
+
 }
