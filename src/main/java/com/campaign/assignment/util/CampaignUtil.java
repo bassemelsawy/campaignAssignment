@@ -27,7 +27,6 @@ public class CampaignUtil {
     private ClassLoader classLoader;
 
     public CampaignUtil() throws IOException {
-        this.classLoader = getClass().getClassLoader();
         load();
     }
 
@@ -38,6 +37,7 @@ public class CampaignUtil {
     ResourceLoader resourceLoader;
 
     public void load() {
+        this.classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream("campaignData.txt");
         map = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
                 .lines()
@@ -55,7 +55,6 @@ public class CampaignUtil {
 
     public String process(Input inputLine) {
         Map<String, Integer> countMap = new HashMap<>();
-        InputStream inputStream = classLoader.getResourceAsStream("input1.txt");
         List<String> listOfSegments = inputLine.getSegments();
 
         System.out.println(listOfSegments.toString());

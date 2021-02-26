@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.campaign.assignment.util.CampaignUtilTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-02-26T09:10:22" hostname="Bassems-MBP.lan" time="0.303">
+  <properties/>
+  <testcase name="should get the right campaign name when call process with a line from input.txt" classname="com.campaign.assignment.util.CampaignUtilTest" time="0.303"/>
+  <system-out><![CDATA[[20231, 19691, 13659, 7507, 19024, 4328]
+03:10:22.739 [Test worker] INFO com.campaign.assignment.util.CampaignUtil - serials
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

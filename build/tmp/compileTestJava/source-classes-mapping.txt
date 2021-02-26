@@ -1,2 +1,4 @@
 com/campaign/assignment/AssignmentApplicationTests.java
  com.campaign.assignment.AssignmentApplicationTests
+com/campaign/assignment/util/CampaignUtilTest.java
+ com.campaign.assignment.util.CampaignUtilTest
