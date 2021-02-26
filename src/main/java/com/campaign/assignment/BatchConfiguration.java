@@ -33,6 +33,7 @@ public class BatchConfiguration {
     @Autowired
     public StepBuilderFactory stepBuilderFactory;
 
+    //TODO : Inject data from application file
     private Resource outputResource = new FileSystemResource("output/outputData.csv");
 
 
@@ -70,7 +71,7 @@ public class BatchConfiguration {
 
     @Bean
     public Step lineProcessingStep() {
-        return stepBuilderFactory.get("step1").<Input, TargetCampaign> chunk(3)
+        return stepBuilderFactory.get("lineProcessingStep").<Input, TargetCampaign> chunk(100000)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())

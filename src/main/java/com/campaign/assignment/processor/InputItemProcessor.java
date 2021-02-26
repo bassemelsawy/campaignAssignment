@@ -13,6 +13,7 @@ public class InputItemProcessor  implements ItemProcessor<Input, TargetCampaign>
         */
         TargetCampaign targetCamp = new TargetCampaign();
         targetCamp.setCampaignName(input.getId());
+        System.out.println(targetCamp.getCampaignName());
         return targetCamp;
     }
 }
