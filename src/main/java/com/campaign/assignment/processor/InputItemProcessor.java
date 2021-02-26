@@ -2,18 +2,20 @@ package com.campaign.assignment.processor;
 
 import com.campaign.assignment.model.Input;
 import com.campaign.assignment.model.TargetCampaign;
+import com.campaign.assignment.util.CampaignUtil;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class InputItemProcessor  implements ItemProcessor<Input, TargetCampaign> {
 
+    @Autowired
+    CampaignUtil campaignUtil ;
+
     @Override
     public TargetCampaign process(Input input) throws Exception {
-        /*
-            Replace input Id with the camp name "result of the solution algorithm"
-        */
+        String campaignResult =  campaignUtil.process(input);
         TargetCampaign targetCamp = new TargetCampaign();
-        targetCamp.setCampaignName(input.getId());
-        System.out.println(targetCamp.getCampaignName());
+        targetCamp.setCampaignName(campaignResult);
         return targetCamp;
     }
 }

@@ -19,4 +19,8 @@ public class Input implements Serializable {
     public void setSegments(List<String> segments) {
         this.segments = segments;
     }
+
+    public List<String> getSegments(){
+        return this.segments;
+    }
 }
